@@ -164,7 +164,7 @@
           <h2>一家に一冊、家族の味の本。</h2>
         </div>
         <div class="book-preview">
-          <div class="book-cover">
+          <div class="book-cover cover-classic" id="bookCoverPreview">
             <p>福山家の味の記録</p>
             <h3>ごはん便り</h3>
           </div>
@@ -184,6 +184,31 @@
               <dd>みんなで食べると、いつもの味が一番おいしい。</dd>
             </dl>
           </article>
+        </div>
+        <div class="cover-choice-panel" aria-labelledby="coverChoiceTitle">
+          <div class="cover-choice-copy">
+            <p class="eyebrow">Cover choice</p>
+            <h3 id="coverChoiceTitle">表紙を3パターンから選べます</h3>
+            <p>Googleフォームでは、気に入った表紙の番号を入力してください。</p>
+            <strong id="coverChoiceResult">選択中: 表紙 1 / あたたかい食卓</strong>
+          </div>
+          <div class="cover-options" id="coverOptions" aria-label="表紙パターン">
+            <button class="cover-option cover-classic is-selected" type="button" data-cover-id="1" data-cover-name="あたたかい食卓" aria-pressed="true">
+              <span>表紙 1</span>
+              <strong>あたたかい食卓</strong>
+              <small>落ち着いた緑で、家族の記録らしい表紙。</small>
+            </button>
+            <button class="cover-option cover-letter" type="button" data-cover-id="2" data-cover-name="手紙のように" aria-pressed="false">
+              <span>表紙 2</span>
+              <strong>手紙のように</strong>
+              <small>紙の質感と罫線で、聞き書きの温度を残す表紙。</small>
+            </button>
+            <button class="cover-option cover-gift" type="button" data-cover-id="3" data-cover-name="贈りもの" aria-pressed="false">
+              <span>表紙 3</span>
+              <strong>贈りもの</strong>
+              <small>記念品として渡しやすい、明るい表紙。</small>
+            </button>
+          </div>
         </div>
       </section>
 
