@@ -12,7 +12,6 @@ const sample = {source:'sample',records:sampleBands.flatMap((band,b)=>sampleComm
 let dataset = sample;
 let storageAvailable = true;
 try {const raw=localStorage.getItem(STORAGE_KEY);if(raw){const parsed=JSON.parse(raw);if(parsed.source==='import'&&Array.isArray(parsed.records)&&parsed.records.every(r=>['band','comment','author','respondent'].every(k=>typeof r[k]==='string')))dataset=parsed;}}catch{storageAvailable=false;}
-let activeBand = '';
 let importedRows = [];
 let toastTimer;
 const iconStyles = ['', 'peach', 'blue', 'purple'];
@@ -34,7 +33,7 @@ function render(){
  card.append(element('p','quote','“ '+matching[0].comment+' ”'));const bottom=element('div','band-bottom');const authors=element('div','author-mini');const circles=element('span','mini-circles');const unique=[...new Set(records.map(r=>r.author))];unique.slice(0,3).forEach(n=>circles.append(element('span','',Array.from(n)[0])));authors.append(circles,document.createTextNode(unique.length+'人からのことば'));const button=element('button','view-feedback');button.append(document.createTextNode('感想を見る'),element('span','','→'));button.addEventListener('click',()=>openBand(name));bottom.append(authors,button);card.append(bottom);grid.append(card);
  });$('#emptyState').hidden=shown>0;
 }
-function openBand(name){activeBand=name;const records=dataset.records.filter(r=>r.band===name);$('#detailName').textContent=name;$('#detailCount').textContent=records.length+'件の感想 · 記入者とセットで表示しています';const list=$('#feedbackList');list.replaceChildren();for(const r of records){const article=element('article','feedback-item');const author=element('div','author');author.append(element('span','avatar',Array.from(r.author)[0]),document.createTextNode(r.author));article.append(author,element('p','',r.comment));list.append(article);}$('#bandDialog').showModal();}
+function openBand(name){const records=dataset.records.filter(r=>r.band===name);$('#detailName').textContent=name;const list=$('#feedbackList');list.replaceChildren();for(const r of records){const article=element('article','feedback-item');const author=element('div','author');author.textContent=r.author;article.append(author,element('p','',r.comment));list.append(article);}$('#bandDialog').showModal();}
 function csvCell(value){let text=String(value);if(/^[\s]*[=+@-]/.test(text)||/^[\t\r]/.test(text))text="'"+text;return '"'+text.replaceAll('"','""')+'"';}
 function exportCSV(records,name){const rows=[['バンド名','記入者','感想'],...records.map(r=>[r.band,r.author,r.comment])];const blob=new Blob(['\uFEFF'+rows.map(r=>r.map(csvCell).join(',')).join('\r\n')],{type:'text/csv;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name.replace(/[\\/:*?"<>|]/g,'_')+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);toast('CSVを書き出しました');}
 // RFC 4180 style parser: quoted commas, escaped quotes and embedded newlines.
@@ -52,7 +51,5 @@ $('#navOverview').addEventListener('click',()=>{window.scrollTo({top:0,behavior:
 $('#navBands').addEventListener('click',()=>{$('#bandsSection').scrollIntoView({behavior:'smooth'});document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));$('#navBands').classList.add('active');});
 $('#search').addEventListener('input',render);document.addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key==='k'&&!document.querySelector('dialog[open]')){e.preventDefault();$('#search').focus();}});
 $('#exportAll').addEventListener('click',()=>exportCSV(dataset.records,'encore_すべての感想'));
-$('#exportBand').addEventListener('click',()=>exportCSV(dataset.records.filter(r=>r.band===activeBand),'encore_'+activeBand));
-$('#copyFeedback').addEventListener('click',async()=>{const text=activeBand+' に届いた感想\n\n'+dataset.records.filter(r=>r.band===activeBand).map(r=>r.author+'さんより\n'+r.comment).join('\n\n──────────\n\n');try{await navigator.clipboard.writeText(text);toast('記入者付きで感想をコピーしました');}catch{toast('コピーできませんでした。CSV書き出しをご利用ください');}});
 for(const button of document.querySelectorAll('.close-dialog'))button.addEventListener('click',()=>button.closest('dialog').close());
 render();
