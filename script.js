@@ -50,6 +50,6 @@ $('#resetButton').addEventListener('click',()=>{if(!confirm('取り込んだ回�
 $('#navOverview').addEventListener('click',()=>{window.scrollTo({top:0,behavior:'smooth'});document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));$('#navOverview').classList.add('active');});
 $('#navBands').addEventListener('click',()=>{$('#bandsSection').scrollIntoView({behavior:'smooth'});document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));$('#navBands').classList.add('active');});
 $('#search').addEventListener('input',render);document.addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key==='k'&&!document.querySelector('dialog[open]')){e.preventDefault();$('#search').focus();}});
-$('#exportAll').addEventListener('click',()=>exportCSV(dataset.records,'encore_すべての感想'));
+$('#exportAll').addEventListener('click',()=>exportCSV(dataset.records,'groove_すべての感想'));
 for(const button of document.querySelectorAll('.close-dialog'))button.addEventListener('click',()=>button.closest('dialog').close());
 render();
